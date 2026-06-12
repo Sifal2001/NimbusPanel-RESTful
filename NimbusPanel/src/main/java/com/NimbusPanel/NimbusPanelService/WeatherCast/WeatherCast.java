@@ -35,6 +35,7 @@ public class WeatherCast {
 	@OneToMany(mappedBy = "weatherCast", cascade = CascadeType.ALL)
 	private List<DailyWeather> daily;
 	
+	
 //	private String description;
 //	private String tempurature;
 	
@@ -46,7 +47,6 @@ public class WeatherCast {
 		this.id = id;
 		this.current = current;
 		this.daily= daily;
-		
 	}
 	
 	public Long getId() {
@@ -72,6 +72,7 @@ public class WeatherCast {
 	public void setDaily(List<DailyWeather> daily) {
 		this.daily = daily;
 	}
+	
 
 	@Override
 	public String toString() {

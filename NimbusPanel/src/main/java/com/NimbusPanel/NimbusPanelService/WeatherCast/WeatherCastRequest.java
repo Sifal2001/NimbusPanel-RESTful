@@ -2,10 +2,11 @@ package com.NimbusPanel.NimbusPanelService.WeatherCast;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.NimbusPanel.NimbusPanelService.Config.Config;
 import com.google.gson.Gson;
@@ -18,6 +19,8 @@ public class WeatherCastRequest {
     private final WeatherConditionRepository weatherConditionRepository;
     private final CurrentWeatherRepository currentWeatherRepository;
     private final DailyWeatherRepository dailyWeatherRepository;
+    
+    private static final Logger log = LoggerFactory.getLogger(WeatherCastRequest.class);
     
     @Autowired
     public WeatherCastRequest(WebClient.Builder webClientBuilder, WeatherCastRepository weatherCastRepository, 
@@ -61,10 +64,8 @@ public class WeatherCastRequest {
             }
         }
         
-        weatherCastRepository.save(responseArray);
-        double fieldToPrint2 = responseArray.getCurrent().getTemp();
-        
-        System.out.println("Field to print: " + fieldToPrint2);
+        weatherCastRepository.save(responseArray);   
+        log.debug("OpenWeather response temp: {}", responseArray.getCurrent().getTemp());
         return responseBody;
     }
 }

@@ -5,7 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -29,6 +35,31 @@ public class UserController {
 		return userService.getUsers();
 
 	}
-
+	
+	@PostMapping
+	public User createUser(@RequestBody User user) {
+		return userService.saveUser(user);
+	}
+	
+	@GetMapping("/emails")
+	public List<String> getAllEmails(){
+		return userService.getAllEmails();
+	}
+	
+	@PostMapping("/authenticate")
+	public ResponseEntity<User> login(@RequestBody AuthenticateRequest request){
+		try {
+			User user = userService.authenticate(request.getEmail(), request.getPassword());
+			return ResponseEntity.ok(user);
+		} catch(RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+	
+    @PostMapping("/{id}/favorites")
+    public ResponseEntity<Void> addFavorite(@PathVariable Long id, @RequestBody String locationName) {
+        userService.addFavoriteLocation(id, locationName);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
 }

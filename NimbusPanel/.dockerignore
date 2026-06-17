@@ -1,0 +1,7 @@
+target/
+.git/
+*.iml
+.settings/
+.classpath
+.project
+config.properties

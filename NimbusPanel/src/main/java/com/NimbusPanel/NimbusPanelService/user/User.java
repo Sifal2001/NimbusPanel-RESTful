@@ -106,8 +106,6 @@ public class User {
 		this.favouriteLocations = favouriteLocations;
 	}
 	
-	
-
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email

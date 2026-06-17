@@ -1,0 +1,28 @@
+services:
+  # PostgreSQL database
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: nimbuspanel
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # Spring Boot server 
+  server:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/nimbuspanel
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      API_KEY: ${API_KEY}
+
+volumes:
+  pgdata:                    

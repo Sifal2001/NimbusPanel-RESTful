@@ -1,10 +1,11 @@
 package com.NimbusPanel.NimbusPanelService.user;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class FavouriteLocations{
@@ -13,7 +14,7 @@ public class FavouriteLocations{
 	private Long id;
 	
 	private String location;
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;

@@ -1,7 +1,6 @@
 package com.NimbusPanel.NimbusPanelService.user;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -51,15 +50,23 @@ public class UserService {
         return user.getFavouriteLocations();
 	}
 	
-    public void addFavoriteLocation(Long userId, String locationName) {
+    public FavouriteLocations addFavoriteLocation(Long userId, String locationName) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
         FavouriteLocations fav = new FavouriteLocations();
         fav.setLocation(locationName);
         fav.setUser(user);
+        
+        return favouriteLocationsRepository.save(fav);
+    }
+    
+    public void deleteFavouriteLocation(Long userId, Long favouriteId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.getFavouriteLocations().add(fav);
-        userRepository.save(user); // due to CascadeType.ALL, favorite is saved automatically
+        user.getFavouriteLocations().removeIf(fav -> fav.getId().equals(favouriteId));
+
+        userRepository.save(user);
     }
 }
